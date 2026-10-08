@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مصرف آسيا العراق الإسلامي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--b1:#0b3d91;--b2:#1e88e5;--sky:#e3f2fd;--sky2:#bbdefb;--red:#d32f2f}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Cairo','Segoe UI',Tahoma,Arial,sans-serif;background:linear-gradient(180deg,var(--sky),#fff);color:#0d2a57;min-height:100vh}
+button{font-family:inherit;cursor:pointer;border:0;border-radius:8px;padding:8px 14px;background:var(--b2);color:#fff;font-size:14px}
+button:hover{background:var(--b1)}
+button.light{background:var(--sky2);color:var(--b1)}
+input,select,textarea{font-family:inherit;font-size:14px}
+header{background:linear-gradient(90deg,var(--b1),var(--b2));color:#fff;text-align:center;padding:18px 10px;font-size:26px;font-weight:bold;box-shadow:0 3px 10px #0004}
+header .sub{font-size:18px;font-weight:600;margin-top:4px;color:#e3f2fd}
+.bar{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:12px;align-items:center}
+.wrap{padding:0 12px 30px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:1000px;background:#fff;box-shadow:0 2px 12px #0b3d9133;border-radius:10px;overflow:hidden}
+th{background:var(--b1);color:#fff;padding:0}
+th input{width:100%;background:transparent;border:0;color:#fff;text-align:center;font-weight:bold;padding:12px 6px;font-size:15px}
+th input:not([readonly]):focus{background:var(--b2);outline:0}
+td{border:1px solid var(--sky2);padding:4px}
+td input.c{width:100%;border:0;padding:8px;background:transparent;text-align:center}
+td input.c:focus{background:var(--sky);outline:1px solid var(--b2)}
+tr:nth-child(even) td{background:#f5faff}
+td.alarm{min-width:230px;text-align:center}
+.alarm .row{display:flex;gap:4px;align-items:center;justify-content:center;flex-wrap:wrap}
+.alarm input{width:70px;padding:5px;border:1px solid var(--sky2);border-radius:6px;text-align:center}
+.alarm input.d{width:125px}
+.badge{display:block;margin-top:4px;padding:5px;border-radius:6px;font-weight:bold;background:var(--sky2);color:var(--b1)}
+tr.done td{background:#e8f5e9!important}
+tr.done .badge{background:#2e7d32;color:#fff}
+.nt{width:100%;min-width:150px;border:1px solid var(--sky2);border-radius:6px;padding:6px;resize:vertical}
+.sw{position:relative;display:inline-block;width:52px;height:28px}
+.sw input{opacity:0;width:0;height:0}
+.sl{position:absolute;inset:0;background:#b0bec5;border-radius:28px;cursor:pointer;transition:.25s}
+.sl:before{content:'';position:absolute;width:22px;height:22px;right:3px;top:3px;background:#fff;border-radius:50%;transition:.25s}
+.sw input:checked+.sl{background:#2e7d32}
+.sw input:checked+.sl:before{transform:translateX(-24px)}
+.by{display:block;color:#567;font-size:11px;margin-top:2px}
+tr.warn td{background:#ffebee!important}
+tr.warn .badge{background:var(--red);color:#fff;animation:bl 1s infinite}
+@keyframes bl{50%{opacity:.45}}
+.del{background:transparent;color:var(--red);font-size:20px;padding:2px 8px}
+.del:hover{background:#ffcdd2}
+#login{position:fixed;inset:0;background:linear-gradient(135deg,var(--b1),var(--b2) 60%,#81d4fa);display:flex;align-items:center;justify-content:center;z-index:9}
+.box{background:#fff;border-radius:16px;padding:28px;width:min(92%,360px);text-align:center;box-shadow:0 10px 40px #0006}
+.box h2{margin:0 0 6px;color:var(--b1)}
+.box input{width:100%;margin:6px 0;padding:11px;border:1px solid var(--sky2);border-radius:8px;text-align:center}
+.box button{width:100%;margin-top:8px}
+#msg{color:var(--red);min-height:20px;font-size:13px}
+.hide{display:none!important}
+dialog{border:0;border-radius:14px;padding:20px;width:min(94%,460px)}
+dialog input,dialog select{width:100%;margin:5px 0;padding:9px;border:1px solid var(--sky2);border-radius:8px}
+#cfgd input{direction:ltr}
+.u{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-bottom:1px solid var(--sky2)}
+.tag{font-size:12px;background:var(--sky2);color:var(--b1);border-radius:10px;padding:2px 8px;margin-inline-start:6px}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="box">
+    <h2>مصرف آسيا العراق الإسلامي</h2>
+    <div style="color:#555;font-size:14px;margin-bottom:8px">تسجيل الدخول</div>
+    <input id="u" placeholder="اسم الحساب" autocomplete="username">
+    <input id="p" type="password" placeholder="الرمز" autocomplete="current-password">
+    <div id="msg"></div>
+    <button id="lbtn">دخول</button>
+    <button class="light" id="ltest">🔍 فحص الاتصال</button>
+    <button class="light hide" id="lcfg">⚙ ضبط الاتصال بـ Supabase</button>
+  </div>
+</div>
+
+<div id="app" class="hide">
+  <header>مصرف آسيا العراق الإسلامي<div class="sub">آمنه احمد</div></header>
+  <div class="bar">
+    <button id="add">＋ إضافة سطر</button>
+    <button class="light" id="mute">🔔 الصوت: يعمل</button>
+    <button class="light hide" id="adm">👥 إدارة الحسابات</button>
+    <button class="light" id="out">خروج</button>
+    <span id="who" style="font-weight:600"></span>
+    <span id="sync" style="font-size:13px;color:#456"></span>
+  </div>
+  <div class="wrap">
+    <table>
+      <thead><tr id="hr"></tr></thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- إدارة الحسابات (الأدمن فقط) -->
+<dialog id="admd">
+  <h3 style="margin-top:0;color:var(--b1)">إدارة الحسابات</h3>
+  <div id="ulist" style="max-height:220px;overflow:auto;margin-bottom:10px"></div>
+  <b style="font-size:14px">إضافة حساب / تغيير رمز حساب موجود</b>
+  <input id="nu" placeholder="اسم الحساب">
+  <input id="np" type="text" placeholder="الرمز (4 أحرف على الأقل)">
+  <select id="nr"><option value="user">مستخدم (عمل فقط)</option><option value="admin">أدمن</option></select>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button id="nadd" style="flex:1">حفظ الحساب</button>
+    <button class="light" id="nclose" style="flex:1">إغلاق</button>
+  </div>
+  <div id="amsg" style="color:var(--red);font-size:13px;min-height:18px;margin-top:6px"></div>
+</dialog>
+
+<!-- الاتصال بـ Supabase: يظهر فقط إن لم تُكتب القيم داخل الملف -->
+<dialog id="cfgd">
+  <h3 style="margin-top:0;color:var(--b1)">ربط Supabase</h3>
+  <input id="sbu" placeholder="Project URL  https://xxxx.supabase.co">
+  <input id="sbk" placeholder="anon public key">
+  <div style="display:flex;gap:8px;margin-top:10px">
+    <button id="sbs" style="flex:1">حفظ</button>
+    <button class="light" id="sbc" style="flex:1">إغلاق</button>
+  </div>
+</dialog>
+
+<script>
+/* ============ ضع بيانات Supabase هنا مرة واحدة قبل الرفع على GitHub ============ */
+const SUPABASE_URL = '';   // مثال: 'https://abcdxyz.supabase.co'
+const SUPABASE_KEY = '';   // مفتاح anon public فقط
+/* ============================================================================== */
+
+const DAY=86400000, POLL=4000;
+const DEFH=['الوقت والتاريخ','رقم الكتاب','الجهة','الموضوع','ملاحظات','المنبه','ملاحظات إضافية','اكتمال'];
+let C={u:SUPABASE_URL,k:SUPABASE_KEY};
+if(!C.u||!C.k){try{C=JSON.parse(localStorage.getItem('aiib_cfg')||'{}')}catch(e){C={}}}
+const clean=v=>String(v||'').replace(/[^\x21-\x7E]/g,'');
+C.u=clean(C.u).replace(/\/+$/,'').replace(/\/rest\/v1$/,'');C.k=clean(C.k);
+let ME=null,H=[...DEFH],R=[],last='',muted=false,audio=null;
+const dirty=new Set(),tm={};let hTm=null,hDirty=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const isAdmin=()=>ME&&ME.role==='admin';
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const nowLocal=()=>{const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16).replace('T',' ')};
+const setSync=t=>$('sync').textContent=t;
+
+async function rpc(fn,args){
+  const r=await fetch(C.u+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:C.k,...(C.k.startsWith('eyJ')?{Authorization:'Bearer '+C.k}:{}),'Content-Type':'application/json'},body:JSON.stringify(args)});
+  if(!r.ok)throw new Error(r.status+' '+(await r.text()));
+  return r.json();
+}
+
+/* ---------- الدخول ---------- */
+async function doLogin(u,p,silent){
+  if(!C.u||!C.k){if(!silent){$('msg').textContent='لم يُضبط الاتصال بـ Supabase بعد';$('lcfg').classList.remove('hide')}return false}
+  try{
+    const d=await rpc('app_get',{u,p});
+    if(!d){if(!silent)$('msg').textContent='الحساب أو الرمز غير صحيح';return false}
+    ME={u,p,role:d.role};sessionStorage.setItem('aiib_s',JSON.stringify({u,p}));
+    audio=audio||new (window.AudioContext||window.webkitAudioContext)();
+    $('login').classList.add('hide');$('app').classList.remove('hide');
+    $('who').textContent='👤 '+u+(isAdmin()?' (أدمن)':'');
+    $('adm').classList.toggle('hide',!isAdmin());
+    apply(d);setInterval(tick,1000);setInterval(poll,POLL);
+    return true;
+  }catch(e){if(!silent)$('msg').textContent='تعذّر الاتصال: '+String(e.message).slice(0,200);return false}
+}
+$('lbtn').onclick=()=>doLogin($('u').value.trim(),$('p').value,false);
+['u','p'].forEach(i=>$(i).addEventListener('keydown',e=>e.key==='Enter'&&$('lbtn').click()));
+$('out').onclick=()=>{sessionStorage.removeItem('aiib_s');location.reload()};
+document.addEventListener('click',()=>{if(audio&&audio.state==='suspended')audio.resume()});
+
+/* ---------- المزامنة ---------- */
+function apply(d){
+  H=(d.headers&&d.headers.length?d.headers:DEFH).concat(DEFH.slice((d.headers||[]).length));
+  R=d.rows||[];last=JSON.stringify([d.headers,d.rows]);render();
+}
+async function poll(){
+  if(!ME||dirty.size||hDirty)return;
+  const a=document.activeElement;if(a&&a.closest&&a.closest('#app table'))return;
+  try{
+    const d=await rpc('app_get',{u:ME.u,p:ME.p});
+    if(!d){alert('تم إيقاف هذا الحساب أو تغيير رمزه');$('out').click();return}
+    if(dirty.size||hDirty)return;
+    const sig=JSON.stringify([d.headers,d.rows]);
+    if(sig!==last){ME.role=d.role;apply(d)}
+    setSync('☁ متصل');
+  }catch(e){setSync('⚠ لا يوجد اتصال')}
+}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)poll()});
+function touch(r){
+  r.by=ME.u;dirty.add(r.id);clearTimeout(tm[r.id]);setSync('⏳ جارٍ الحفظ...');
+  tm[r.id]=setTimeout(()=>flush(r.id),600);
+}
+async function flush(id){
+  const r=R.find(x=>x.id===id);if(!r){dirty.delete(id);return}
+  try{await rpc('app_save_row',{u:ME.u,p:ME.p,rid:id,d:r,o:r.ord});dirty.delete(id);setSync('☁ تمت المزامنة')}
+  catch(e){setSync('⚠ فشل الحفظ، تتم إعادة المحاولة');tm[id]=setTimeout(()=>flush(id),3000)}
+}
+function saveHeaders(){
+  hDirty=true;clearTimeout(hTm);
+  hTm=setTimeout(async()=>{try{await rpc('app_save_headers',{u:ME.u,p:ME.p,h:H});hDirty=false;setSync('☁ تمت المزامنة')}catch(e){setSync('⚠ فشل حفظ العناوين')}},700);
+}
+
+/* ---------- الجدول ---------- */
+function render(){
+  const ro=isAdmin()?'':'readonly';
+  $('hr').innerHTML=H.map((h,i)=>`<th><input ${ro} value="${esc(h)}" data-h="${i}"></th>`).join('')+(isAdmin()?'<th style="width:40px"></th>':'');
+  $('tb').innerHTML=R.map((r,i)=>'<tr>'+
+    r.c.map((v,j)=>`<td><input class="c" data-r="${i}" data-c="${j}" value="${esc(v)}"></td>`).join('')+
+    `<td class="alarm"><div class="row"><span>المدة:</span><input type="number" min="0" data-d="${i}" value="${esc(r.days)}" placeholder="أيام"><span>من:</span><input class="d" type="date" data-s="${i}" value="${esc(r.start)}"></div><span class="badge" id="bd${i}"></span></td>`+
+    `<td><textarea class="nt" rows="2" data-n="${i}">${esc(r.n)}</textarea></td>`+
+    `<td style="text-align:center"><label class="sw"><input type="checkbox" data-t="${i}" ${r.done?'checked':''}><span class="sl"></span></label><small class="by">${esc(r.by)}</small></td>`+
+    (isAdmin()?`<td><button class="del" data-x="${i}" title="حذف">×</button></td>`:'')+'</tr>').join('');
+  tick();
+}
+function tick(){
+  let alarm=false;
+  R.forEach((r,i)=>{
+    const b=$('bd'+i),tr=b&&b.closest('tr');if(!b)return;
+    tr.classList.toggle('done',!!r.done);
+    if(r.done){b.textContent='✔ تم الإنجاز';tr.classList.remove('warn');return}
+    if(r.days===''||r.days==null||isNaN(r.days)){b.textContent='—';tr.classList.remove('warn');return}
+    const left=new Date(r.start+'T00:00:00').getTime()+r.days*DAY-Date.now();
+    const d=Math.floor(left/DAY),h=Math.floor(left%DAY/3600000);
+    b.textContent=left<=0?'⛔ انتهت المدة':left<=DAY?'⚠ يتبقى أقل من يوم ('+h+' ساعة)':'متبقي '+d+' يوم و '+h+' ساعة';
+    const w=left<=DAY;tr.classList.toggle('warn',w);if(w)alarm=true;
+  });
+  if(alarm&&!muted&&Math.floor(Date.now()/1000)%5===0)beep();
+}
+function beep(){
+  if(!audio)return;[0,.25,.5].forEach(t=>{
+    const o=audio.createOscillator(),g=audio.createGain();o.type='square';o.frequency.value=880;
+    g.gain.value=.15;o.connect(g);g.connect(audio.destination);
+    o.start(audio.currentTime+t);o.stop(audio.currentTime+t+.15);
+  });
+}
+document.addEventListener('input',e=>{
+  const t=e.target,D=t.dataset;let r;
+  if(D.h!==undefined){if(!isAdmin())return;H[D.h]=t.value;saveHeaders();return}
+  if(D.r!==undefined){r=R[D.r];r.c[D.c]=t.value}
+  else if(D.d!==undefined){r=R[D.d];r.days=t.value===''?'':+t.value}
+  else if(D.s!==undefined){r=R[D.s];r.start=t.value}
+  else if(D.n!==undefined){r=R[D.n];r.n=t.value}
+  else if(D.t!==undefined){r=R[D.t];r.done=t.checked}
+  else return;
+  touch(r);tick();
+});
+document.addEventListener('click',async e=>{
+  const x=e.target.dataset.x;
+  if(x!==undefined&&isAdmin()&&confirm('حذف هذا السطر للجميع؟')){
+    const id=R[x].id;R.splice(x,1);render();
+    try{await rpc('app_delete_row',{u:ME.u,p:ME.p,rid:id})}catch(err){alert('فشل الحذف')}
+  }
+});
+$('add').onclick=()=>{
+  const r={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),ord:Date.now(),c:[nowLocal(),'','','',''],days:'',start:today(),n:'',done:false,by:ME.u};
+  R.push(r);render();touch(r);
+};
+$('mute').onclick=()=>{muted=!muted;$('mute').textContent=muted?'🔕 الصوت: متوقف':'🔔 الصوت: يعمل'};
+
+/* ---------- إدارة الحسابات (أدمن) ---------- */
+async function loadUsers(){
+  try{
+    const l=await rpc('app_users_list',{u:ME.u,p:ME.p});
+    $('ulist').innerHTML=l.map(x=>`<div class="u"><span>${esc(x.username)}<span class="tag">${x.role==='admin'?'أدمن':'مستخدم'}</span></span>${x.username===ME.u?'':`<button class="del" data-du="${esc(x.username)}">×</button>`}</div>`).join('');
+  }catch(e){$('amsg').textContent='تعذّر تحميل الحسابات'}
+}
+$('adm').onclick=()=>{$('amsg').textContent='';$('admd').showModal();loadUsers()};
+$('nclose').onclick=()=>$('admd').close();
+$('nadd').onclick=async()=>{
+  const nu=$('nu').value.trim(),np=$('np').value;
+  if(nu.length<2||np.length<4){$('amsg').textContent='الاسم حرفان على الأقل والرمز 4 أحرف على الأقل';return}
+  try{await rpc('app_user_add',{u:ME.u,p:ME.p,nu,np,nr:$('nr').value});$('nu').value='';$('np').value='';$('amsg').textContent='';loadUsers()}
+  catch(e){$('amsg').textContent='فشل الحفظ'}
+};
+$('ulist').addEventListener('click',async e=>{
+  const n=e.target.dataset.du;
+  if(n&&confirm('حذف الحساب '+n+'؟')){try{await rpc('app_user_del',{u:ME.u,p:ME.p,nu:n});loadUsers()}catch(err){$('amsg').textContent='فشل الحذف'}}
+});
+
+/* ---------- ضبط الاتصال (احتياطي) ---------- */
+$('lcfg').onclick=()=>{$('sbu').value=C.u||'';$('sbk').value=C.k||'';$('cfgd').showModal()};
+$('sbc').onclick=()=>$('cfgd').close();
+$('sbs').onclick=()=>{C={u:$('sbu').value.trim().replace(/\/$/,''),k:$('sbk').value.trim()};localStorage.setItem('aiib_cfg',JSON.stringify(C));$('cfgd').close();$('msg').textContent=''};
+
+$('ltest').onclick=async()=>{
+  const m=$('msg');m.style.whiteSpace='pre-line';m.style.direction='ltr';
+  let t='URL: '+(C.u||'(empty)')+'\nKEY: '+(C.k?C.k.slice(0,8)+'... ('+C.k.length+' chars)':'(empty)');
+  m.textContent=t+'\nTesting...';
+  try{const r=await fetch(C.u+'/rest/v1/',{headers:{apikey:C.k}});t+='\nHTTP '+r.status}
+  catch(e){t+='\nERROR: '+e.message}
+  try{const r=await fetch(C.u+'/rest/v1/rpc/app_login',{method:'POST',headers:{apikey:C.k,'Content-Type':'application/json'},body:'{"u":"x","p":"x"}'});t+='\nRPC app_login: HTTP '+r.status+' '+(await r.text()).slice(0,120)}
+  catch(e){t+='\nRPC ERROR: '+e.message}
+  m.textContent=t;
+};
+/* دخول تلقائي عند إعادة تحميل الصفحة داخل نفس التبويب */
+try{const s=JSON.parse(sessionStorage.getItem('aiib_s')||'null');if(s)doLogin(s.u,s.p,true)}catch(e){}
+if(!C.u||!C.k)$('lcfg').classList.remove('hide');
+</script>
+</body>
+</html>
