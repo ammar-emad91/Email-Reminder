@@ -120,16 +120,17 @@ dialog input,dialog select{width:100%;margin:5px 0;padding:9px;border:1px solid 
 
 <script>
 /* ============ ضع بيانات Supabase هنا مرة واحدة قبل الرفع على GitHub ============ */
-const SUPABASE_URL = 'https://fbcxfefsmxzyzybvbood.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_qrv2R1hkUZnLNNJ_GC6dmA_2XEZctqW';   // مفتاح anon public فقط
-/* ============================================================================== */
+const SUPABASE_URL = 'https://fbcxfefsmxzyzybvbood.supabase.co';   // رابط مشروعك (جاهز)
+   const SUPABASE_KEY = 'eyJhbGci.....';/* ============================================================================== */
 
 const DAY=86400000, POLL=4000;
 const DEFH=['الوقت والتاريخ','رقم الكتاب','الجهة','الموضوع','ملاحظات','المنبه','ملاحظات إضافية','اكتمال'];
 let C={u:SUPABASE_URL,k:SUPABASE_KEY};
 if(!C.u||!C.k){try{C=JSON.parse(localStorage.getItem('aiib_cfg')||'{}')}catch(e){C={}}}
 const clean=v=>String(v||'').replace(/[^\x21-\x7E]/g,'');
-C.u=clean(C.u).replace(/\/+$/,'').replace(/\/rest\/v1$/,'');C.k=clean(C.k);
+{const V=[C.u,C.k].map(clean);
+C.u=(V.find(v=>/^https?:\/\//.test(v))||SUPABASE_URL).replace(/\/+$/,'').replace(/\/rest\/v1$/,'');
+C.k=V.find(v=>v.startsWith('eyJ'))||V.find(v=>v.startsWith('sb_'))||'';}
 let ME=null,H=[...DEFH],R=[],last='',muted=false,audio=null;
 const dirty=new Set(),tm={};let hTm=null,hDirty=false;
 const $=id=>document.getElementById(id);
