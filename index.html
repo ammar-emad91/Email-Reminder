@@ -75,7 +75,7 @@ dialog input,dialog select{width:100%;margin:5px 0;padding:9px;border:1px solid 
 </div>
 
 <div id="app" class="hide">
-  <header>مصرف آسيا العراق الإسلامي<div class="sub">آمنه احمد</div></header>
+  <header>مصرف آسيا العراق الإسلامي<div class="sub" id="sub"></div></header>
   <div class="bar">
     <button id="add">＋ إضافة سطر</button>
     <button class="light" id="mute">🔔 الصوت: يعمل</button>
@@ -121,7 +121,7 @@ dialog input,dialog select{width:100%;margin:5px 0;padding:9px;border:1px solid 
 <script>
 /* ============ ضع بيانات Supabase هنا مرة واحدة قبل الرفع على GitHub ============ */
 const SUPABASE_URL = 'https://fbcxfefsmxzyzybvbood.supabase.co';   // رابط مشروعك (جاهز)
-const SUPABASE_KEY = 'sb_publishable_qrv2R1hkUZnLNNJ_GC6dmA_2XEZctqW';   // الصق هنا المفتاح الذي يبدأ بـ eyJ بين علامتي الاقتباس
+const SUPABASE_KEY = '';   // الصق هنا المفتاح الذي يبدأ بـ eyJ بين علامتي الاقتباس
 /* ============================================================================== */
 
 const DAY=86400000, POLL=4000;
@@ -157,6 +157,7 @@ async function doLogin(u,p,silent){
     audio=audio||new (window.AudioContext||window.webkitAudioContext)();
     $('login').classList.add('hide');$('app').classList.remove('hide');
     $('who').textContent='👤 '+u+(isAdmin()?' (أدمن)':'');
+    $('sub').textContent=isAdmin()?'آمنه أحمد':u;
     $('adm').classList.toggle('hide',!isAdmin());
     apply(d);setInterval(tick,1000);setInterval(poll,POLL);
     return true;
