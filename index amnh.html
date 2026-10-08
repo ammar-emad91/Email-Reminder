@@ -119,14 +119,15 @@ dialog input,dialog select{width:100%;margin:5px 0;padding:9px;border:1px solid 
 
 <script>
 /* ============ ضع بيانات Supabase هنا مرة واحدة قبل الرفع على GitHub ============ */
-const SUPABASE_URL = 'https://fbcxfefsmxzyzybvbood.supabase.co';   // مثال: 'https://abcdxyz.supabase.co'
-const SUPABASE_KEY = 'sb_publishable_qrv2R1hkUZnLNNJ_GC6dmA_2XEZctqW';   // مفتاح anon public فقط
+const SUPABASE_URL = '';   // مثال: 'https://abcdxyz.supabase.co'
+const SUPABASE_KEY = '';   // مفتاح anon public فقط
 /* ============================================================================== */
 
 const DAY=86400000, POLL=4000;
 const DEFH=['الوقت والتاريخ','رقم الكتاب','الجهة','الموضوع','ملاحظات','المنبه','ملاحظات إضافية','اكتمال'];
 let C={u:SUPABASE_URL,k:SUPABASE_KEY};
 if(!C.u||!C.k){try{C=JSON.parse(localStorage.getItem('aiib_cfg')||'{}')}catch(e){C={}}}
+C.u=String(C.u||'').trim().replace(/\/+$/,'').replace(/\/rest\/v1$/,'');C.k=String(C.k||'').trim();
 let ME=null,H=[...DEFH],R=[],last='',muted=false,audio=null;
 const dirty=new Set(),tm={};let hTm=null,hDirty=false;
 const $=id=>document.getElementById(id);
@@ -138,7 +139,7 @@ const setSync=t=>$('sync').textContent=t;
 
 async function rpc(fn,args){
   const r=await fetch(C.u+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:C.k,...(C.k.startsWith('eyJ')?{Authorization:'Bearer '+C.k}:{}),'Content-Type':'application/json'},body:JSON.stringify(args)});
-  if(!r.ok)throw new Error(await r.text());
+  if(!r.ok)throw new Error(r.status+' '+(await r.text()));
   return r.json();
 }
 
@@ -155,7 +156,7 @@ async function doLogin(u,p,silent){
     $('adm').classList.toggle('hide',!isAdmin());
     apply(d);setInterval(tick,1000);setInterval(poll,POLL);
     return true;
-  }catch(e){if(!silent)$('msg').textContent='تعذّر الاتصال بالخادم، تحقق من الإعدادات والإنترنت';return false}
+  }catch(e){if(!silent)$('msg').textContent='تعذّر الاتصال: '+String(e.message).slice(0,200);return false}
 }
 $('lbtn').onclick=()=>doLogin($('u').value.trim(),$('p').value,false);
 ['u','p'].forEach(i=>$(i).addEventListener('keydown',e=>e.key==='Enter'&&$('lbtn').click()));
